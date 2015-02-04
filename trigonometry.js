@@ -29,7 +29,7 @@ function draw() {
     var width = ctx.canvas.width;
     var radius = 100;
     var i,n,dx;
-    var freq = width/(4*Math.PI);
+    var freq = width/(8*Math.PI);
 
     ctx.lineWidth = 3;
     ctx.save();
@@ -49,25 +49,49 @@ function draw() {
 
     if (sbox.checked) {
 
-	ctx.strokeStyle = "red";
+	ctx.strokeStyle = "#fcc";
 	ctx.beginPath();
 	n = 1000;
-	dx = width/(50*n);
+	dx = width/(freq*n);
 	ctx.moveTo(-width/2,radius*Math.sin(-n*dx));
 	for (i=-n+1; i< n; i++) {
 	    ctx.lineTo(freq*i*dx,radius*Math.sin(i*dx));
 	}
 	ctx.stroke();
+	ctx.strokeStyle = "red";
+	ctx.beginPath();
+	n = 1000;
+	dx = width/(50*n);
+	n = Math.floor(Math.abs(ang)/dx);
+	dx = ang/n;
+	ctx.moveTo(0,0);
+	for (i=1; i< n; i++) {
+	    ctx.lineTo(freq*i*dx,radius*Math.sin(i*dx));
+	}
+	ctx.stroke();
+
     }
 
     if (cbox.checked) {
     
+	ctx.strokeStyle = "#ccf";
+	ctx.beginPath();
+	n = 1000;
+	dx = height/(freq*n);
+	ctx.moveTo(radius*Math.cos(-n*dx),-height/2);
+	for (i=-n+1; i< n; i++) {
+	    ctx.lineTo(radius*Math.cos(i*dx),freq*i*dx);
+	}
+	ctx.stroke();
+
 	ctx.strokeStyle = "blue";
 	ctx.beginPath();
 	n = 1000;
 	dx = height/(50*n);
-	ctx.moveTo(radius*Math.cos(-n*dx),-height/2);
-	for (i=-n+1; i< n; i++) {
+	n = Math.floor(Math.abs(ang)/dx);
+	dx = ang/n;
+	ctx.moveTo(radius,0);
+	for (i=1; i< n; i++) {
 	    ctx.lineTo(radius*Math.cos(i*dx),freq*i*dx);
 	}
 	ctx.stroke();
@@ -169,10 +193,10 @@ function reset(e) {
     nang = Math.atan2(-pos.y+height/2,pos.x-width/2);
     var wind = Math.round((nang-ang)/(2*Math.PI));
     ang = nang - 2*Math.PI*wind;
-    if (ang > 2*Math.PI)
+    if (ang > 4*Math.PI)
 	ang -= 4*Math.PI;
     
-    if (ang < -2*Math.PI)
+    if (ang < -4*Math.PI)
 	ang += 4*Math.PI;
     angdisplay.innerHTML = Math.round(ang*100)/100;
     /*
