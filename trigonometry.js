@@ -4,13 +4,18 @@ var clicked;
 var angdisplay;
 var sbox;
 var cbox;
+var dbox;
+var deg = true;
 
 function init() {
     angdisplay = document.querySelector('#ang');
     sbox = document.querySelector('#sine');
     cbox = document.querySelector('#cosine');
+    dbox = document.querySelector('#degrees');
     sbox.onchange = draw;
     cbox.onchange = draw;
+    dbox.onchange = setAngle;
+    setAngle();
     var g = document.querySelector("#trig");
     g.addEventListener("mousedown",doMouseDown,false);
     g.addEventListener("mouseup",doMouseUp,false);
@@ -198,7 +203,11 @@ function reset(e) {
     
     if (ang < -4*Math.PI)
 	ang += 4*Math.PI;
-    angdisplay.innerHTML = Math.round(ang*100)/100;
+    if (deg) {
+	angdisplay.innerHTML = Math.round(ang*100*180/Math.PI)/100 + "°";
+    } else {
+	angdisplay.innerHTML = Math.round(ang*100)/100;
+    }
     /*
     if (nang > Math.PI + ang) {
 	nang -= 2*Math.PI;
@@ -238,4 +247,13 @@ function clear(c) {
     c.setTransform(1, 0, 0, 1, 0, 0);
     c.clearRect(0, 0, c.canvas.width, c.canvas.height);
     c.restore();
+}
+
+function setAngle() {
+    deg = dbox.checked;
+    if (deg) {
+	angdisplay.innerHTML = Math.round(ang*100*180/Math.PI)/100 + "°";
+    } else {
+	angdisplay.innerHTML = Math.round(ang*100)/100;
+    }
 }
